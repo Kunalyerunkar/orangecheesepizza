@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Pizza crust -->
+  <path d="M2 2L16 30L30 2C30 2 16 10 2 2Z" fill="#FFC278" stroke="#E67E22" stroke-width="1.5"/>
+  
+  <!-- Cheese -->
+  <path d="M5 5L16 26L27 5C27 5 16 12 5 5Z" fill="#FFEB3B" stroke="#FFC107" stroke-width="0.5"/>
+  
+  <!-- Pepperoni -->
+  <circle cx="12" cy="10" r="2" fill="#E53935"/>
+  <circle cx="18" cy="15" r="1.5" fill="#E53935"/>
+  <circle cx="14" cy="19" r="1.8" fill="#E53935"/>
+  
+  <!-- Hot point at the tip -->
+  <circle cx="16" cy="3" r="1" fill="transparent"/>
+</svg> 

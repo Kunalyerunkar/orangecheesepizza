@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pizza Cursor Converter</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .instructions {
+        background-color: #f5f5f5;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      .pizza-image {
+        max-width: 300px;
+        margin-bottom: 20px;
+      }
+      .cursor-preview {
+        width: 500px;
+        height: 300px;
+        border: 2px dashed #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      .cursor-example {
+        cursor: url("/images/pizza-slice.png") 0 0, auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Pizza Cursor Converter</h1>
+
+    <div class="instructions">
+      <h2>Instructions:</h2>
+      <ol>
+        <li>
+          Save the pizza slice cursor as
+          <code>/public/images/pizza-slice.cur</code>
+        </li>
+        <li>
+          The .cur file format already has the hotspot information embedded
+        </li>
+        <li>Make sure the image has a transparent background</li>
+        <li>
+          Create a copy called
+          <code>/public/images/pizza-slice-spinning.cur</code> for the loading
+          cursor
+        </li>
+      </ol>
+    </div>
+
+    <h2>Original Pizza Image:</h2>
+    <img src="/images/pizza-slice.png" alt="Pizza Slice" class="pizza-image" />
+
+    <h2>Cursor Preview:</h2>
+    <div class="cursor-preview cursor-example">
+      <p>Move your cursor in this area to see the pizza cursor</p>
+    </div>
+
+    <h2>Testing Area:</h2>
+    <div class="cursor-example">
+      <button style="padding: 10px 20px; margin: 10px">Button Example</button>
+      <a href="#" style="margin: 10px">Link Example</a>
+      <input type="text" placeholder="Input Example" style="margin: 10px" />
+    </div>
+    <button onclick="startLoading()">Simulate Loading Cursor</button>
+    <script>
+      function startLoading() {
+        document.body.classList.add("loading");
+        setTimeout(() => {
+          document.body.classList.remove("loading");
+        }, 3000); // simulate 3-second loading
+      }
+    </script>
+    <style>
+      body.loading {
+        cursor: url("/images/pizza-slice-spinning.cur") 16 30, auto;
+      }
+    </style>
+  </body>
+</html>

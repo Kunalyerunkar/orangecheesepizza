@@ -1,6 +1,16 @@
+/* 
+ * This file uses Tailwind CSS directives like @tailwind and @apply
+ * The CSS editor might show warnings for these directives, but they are valid
+ * and will be processed correctly by the Tailwind CSS processor.
+ * 
+ * The warnings can be safely ignored.
+ */
+
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
+@import "./styles/cursor.css";
 
+/* tailwindcss directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -67,5 +77,9 @@
 
   .container {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .page-container {
+    @apply pt-28 pb-20 px-4;
   }
 }

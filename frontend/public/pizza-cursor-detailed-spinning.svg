@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @keyframes spin {
+      from { transform: rotate(0deg); transform-origin: center; }
+      to { transform: rotate(360deg); transform-origin: center; }
+    }
+    .pizza-container {
+      animation: spin 1.5s linear infinite;
+      transform-origin: center;
+    }
+  </style>
+  
+  <g class="pizza-container">
+    <!-- Pizza slice shape with transparent background -->
+    <path d="M2 2L16 30L30 2H2Z" fill="transparent"/>
+    
+    <!-- Actual pizza slice image will be loaded from the PNG -->
+    <foreignObject x="0" y="0" width="32" height="32">
+      <div xmlns="http://www.w3.org/1999/xhtml" style="width: 100%; height: 100%; background-image: url('/images/pizza-slice.png'); background-size: contain; background-position: center; background-repeat: no-repeat;"></div>
+    </foreignObject>
+  </g>
+  
+  <!-- Hot point at the center -->
+  <circle cx="16" cy="16" r="1" fill="transparent"/>
+</svg> 

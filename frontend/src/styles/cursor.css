@@ -1,0 +1,45 @@
+/* Custom Pizza Cursor */
+.pizza-cursor {
+  cursor: url("/images/pizza-slice.png") 0 0, auto;
+}
+
+.pizza-cursor-pointer {
+  cursor: url("/images/pizza-slice.png") 0 0, pointer;
+}
+
+/* Apply custom cursor to common interactive elements */
+.pizza-cursor button,
+.pizza-cursor a,
+.pizza-cursor input[type="submit"],
+.pizza-cursor input[type="button"],
+.pizza-cursor .btn,
+.pizza-cursor .card:hover {
+  cursor: url("/images/pizza-slice.png") 0 0, pointer;
+}
+
+/* Animated pizza cursor for loading states */
+@keyframes rotatePizza {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pizza-cursor-loading {
+  cursor: url("/images/pizza-slice-spinning.png") 0 0, wait;
+}
+
+/* Ensure the cursor works in all browsers */
+@supports (-moz-appearance: none) {
+  .pizza-cursor,
+  .pizza-cursor button,
+  .pizza-cursor a,
+  .pizza-cursor input[type="submit"],
+  .pizza-cursor input[type="button"],
+  .pizza-cursor .btn,
+  .pizza-cursor .card:hover {
+    cursor: url("/images/pizza-slice.png") 0 0, auto;
+  }
+}
