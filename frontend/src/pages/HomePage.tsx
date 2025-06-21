@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
-    <div className="pt-16">
+    <div className="pt-24">
       {/* Hero Section */}
       <section className="relative bg-gray-100 overflow-hidden">
         <div className="container mx-auto py-20 px-4 flex flex-col md:flex-row items-center">

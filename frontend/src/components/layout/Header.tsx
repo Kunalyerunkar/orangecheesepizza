@@ -51,7 +51,7 @@ const Header = () => {
           <img
             src="https://orangecheesepizza.com/wp-content/uploads/2025/05/MIRA-ROAD-EAST-Orenge-Cheese-Pizza-_5-Jan-1.png"
             alt="Orange Cheese Pizza"
-            className="h-[150px] w-auto"
+            className="h-[80px] w-auto"
           />
           {/* <span className="ml-2 text-xl font-bold text-primary">
             Orange Cheese Pizza

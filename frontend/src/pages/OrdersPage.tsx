@@ -28,7 +28,7 @@ const OrdersPage = () => {
   ];
 
   return (
-    <div className="container mx-auto py-20 px-4">
+    <div className="container page-container">
       <h1 className="text-3xl font-bold mb-8">My Orders</h1>
 
       {orders.length > 0 ? (
