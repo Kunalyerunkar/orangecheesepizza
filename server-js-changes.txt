@@ -1,0 +1,38 @@
+# Changes for server.js
+
+Add this code after the MongoDB connection to fix the index issues:
+
+```javascript
+mongoose
+   .connect(MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+      socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
+   })
+   .then(async () => {
+      console.log('MongoDB Connected');
+      
+      // Drop problematic indexes when server starts
+      try {
+         const usersCollection = mongoose.connection.collection('users');
+         await usersCollection.dropIndexes();
+         console.log('Dropped existing indexes from users collection');
+         
+         // Recreate indexes as needed
+         await usersCollection.createIndex({ phoneNumber: 1 }, { unique: true, sparse: true });
+         await usersCollection.createIndex({ email: 1 }, { 
+            unique: true, 
+            sparse: true,
+            partialFilterExpression: { email: { $type: "string" } }
+         });
+         console.log('Created new indexes on users collection');
+      } catch (indexError) {
+         console.error('Error managing indexes:', indexError);
+      }
+   })
+   .catch((err) => {
+      console.error('MongoDB Connection Error:');
+      console.error(err);
+   });
+``` 

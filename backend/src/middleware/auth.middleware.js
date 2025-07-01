@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { adminConfig } from '../config/admin.config.js';
 import User from '../models/user.model.js';
 
 // Protect routes - User must be authenticated
@@ -15,7 +16,7 @@ const protect = async (req, res, next) => {
          token = req.headers.authorization.split(' ')[1];
 
          // Verify token
-         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+         const decoded = jwt.verify(token, adminConfig.jwtSecret);
 
          // Check if admin token
          if (decoded.id === 'admin') {
@@ -47,3 +48,4 @@ const admin = (req, res, next) => {
 };
 
 export { admin, protect };
+

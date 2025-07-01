@@ -5,24 +5,34 @@ import { admin, protect } from '../middleware/auth.middleware.js';
 const router = express.Router();
 
 // @route   POST /api/users/register
-// @desc    Register a new user
+// @desc    Register a new user with email and password
 // @access  Public
 router.post('/register', userController.registerUser);
 
 // @route   POST /api/users/login
-// @desc    User login
+// @desc    User login with email and password
 // @access  Public
 router.post('/login', userController.loginUser);
+
+// @route   POST /api/users/send-verification
+// @desc    Send verification code for phone login/registration
+// @access  Public
+router.post('/send-verification', userController.sendVerificationCode);
+
+// @route   POST /api/users/verify-code
+// @desc    Verify code and authenticate user
+// @access  Public
+router.post('/verify-code', userController.verifyCode);
 
 // @route   POST /api/users/admin/login
 // @desc    Admin login
 // @access  Public
 router.post('/admin/login', userController.adminLogin);
 
-// @route   GET /api/users/profile
-// @desc    Get user profile
+// @route   GET /api/users/me
+// @desc    Get current user profile
 // @access  Private
-router.get('/profile', protect, userController.getUserProfile);
+router.get('/me', protect, userController.getCurrentUser);
 
 // @route   PUT /api/users/profile
 // @desc    Update user profile

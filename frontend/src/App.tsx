@@ -1,5 +1,10 @@
-import { ClerkProvider } from "@clerk/clerk-react";
-import React, { useEffect, useState } from "react";
+import React, {
+  Component,
+  ErrorInfo,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
 import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
@@ -11,6 +16,9 @@ import Header from "./components/layout/Header";
 // Common components
 import PizzaPreloader from "./components/common/PizzaPreloader";
 import PreloaderProvider from "./components/common/PreloaderProvider";
+
+// Auth Provider
+import { AuthProvider } from "./utils/authContext";
 
 // Pages
 import CartPage from "./pages/CartPage";
@@ -26,6 +34,7 @@ import OrdersPage from "./pages/OrdersPage";
 import PreloaderExamplePage from "./pages/PreloaderExamplePage";
 import ProfilePage from "./pages/ProfilePage";
 import RegisterPage from "./pages/RegisterPage";
+import VerificationTestPage from "./pages/VerificationTestPage";
 
 // Admin pages
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
@@ -34,86 +43,151 @@ import AdminLoginPage from "./pages/admin/AdminLoginPage";
 import AdminOrdersPage from "./pages/admin/AdminOrdersPage";
 import AdminUsersPage from "./pages/admin/AdminUsersPage";
 
-// Create a client
-const queryClient = new QueryClient();
+// Error Boundary for catching React rendering errors
+interface ErrorBoundaryProps {
+  children: ReactNode;
+}
 
-const App = () => {
-  const [clerkKey, setClerkKey] = useState<string>("");
-  const [showInitialLoader, setShowInitialLoader] = useState(true);
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+  errorInfo: ErrorInfo | null;
+}
+
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = {
+      hasError: false,
+      error: null,
+      errorInfo: null,
+    };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error, errorInfo: null };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
+    console.error("Uncaught error:", error, errorInfo);
+    this.setState({ error, errorInfo });
+  }
+
+  render(): ReactNode {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-50">
+          <h1 className="text-3xl font-bold text-red-600 mb-4">
+            Something went wrong
+          </h1>
+          <p className="text-gray-700 mb-4">
+            There was an error loading the application.
+          </p>
+          {this.state.error && (
+            <div className="bg-red-50 p-4 rounded-lg border border-red-100 max-w-md w-full mb-4">
+              <p className="font-semibold">
+                Error: {this.state.error.toString()}
+              </p>
+            </div>
+          )}
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark transition-colors"
+          >
+            Reload Page
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// Create a client with default options
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 3, // Retry failed requests 3 times
+      retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
+    },
+  },
+});
+
+function App() {
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Load Clerk publishable key from environment variables
-    const key = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || "";
-    setClerkKey(key);
+    // Simulate loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
 
-    // Ensure the pizza preloader runs at least once
-    // It will hide itself after minDisplayTime (3000ms)
-    // We don't need to manually hide it here
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
-  // If initial loader is showing or clerk key is not yet loaded, show the pizza preloader
-  if (showInitialLoader || !clerkKey) {
-    return (
-      <PizzaPreloader
-        minDisplayTime={3000}
-        onComplete={() => setShowInitialLoader(false)}
-      />
-    );
+  if (isLoading) {
+    return <PizzaPreloader />;
   }
 
   return (
-    <ClerkProvider publishableKey={clerkKey}>
+    <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <Router>
+        <AuthProvider>
           <PreloaderProvider>
-            <div className="flex flex-col min-h-screen pizza-cursor">
-              <Header />
-              <main className="flex-grow">
-                <Routes>
-                  {/* Public routes */}
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/menu" element={<MenuPage />} />
-                  <Route path="/food/:id" element={<FoodDetailPage />} />
-                  <Route path="/cart" element={<CartPage />} />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/register" element={<RegisterPage />} />
-                  <Route
-                    path="/preloader-examples"
-                    element={<PreloaderExamplePage />}
-                  />
+            <Router>
+              <div className="flex flex-col min-h-screen">
+                <Header />
+                <main className="flex-grow">
+                  <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/menu" element={<MenuPage />} />
+                    <Route path="/food/:id" element={<FoodDetailPage />} />
+                    <Route path="/cart" element={<CartPage />} />
+                    <Route path="/checkout" element={<CheckoutPage />} />
+                    <Route path="/orders" element={<OrdersPage />} />
+                    <Route path="/orders/:id" element={<OrderDetailPage />} />
+                    <Route
+                      path="/order-confirmation"
+                      element={<OrderConfirmationPage />}
+                    />
+                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route
+                      path="/preloader-example"
+                      element={<PreloaderExamplePage />}
+                    />
+                    <Route
+                      path="/verification-test"
+                      element={<VerificationTestPage />}
+                    />
 
-                  {/* Protected routes */}
-                  <Route path="/checkout" element={<CheckoutPage />} />
-                  <Route
-                    path="/order-confirmation/:id"
-                    element={<OrderConfirmationPage />}
-                  />
-                  <Route path="/orders" element={<OrdersPage />} />
-                  <Route path="/orders/:id" element={<OrderDetailPage />} />
-                  <Route path="/profile" element={<ProfilePage />} />
+                    {/* Admin routes */}
+                    <Route path="/admin/login" element={<AdminLoginPage />} />
+                    <Route
+                      path="/admin/dashboard"
+                      element={<AdminDashboardPage />}
+                    />
+                    <Route path="/admin/foods" element={<AdminFoodsPage />} />
+                    <Route path="/admin/orders" element={<AdminOrdersPage />} />
+                    <Route path="/admin/users" element={<AdminUsersPage />} />
 
-                  {/* Admin routes */}
-                  <Route path="/admin/login" element={<AdminLoginPage />} />
-                  <Route
-                    path="/admin/dashboard"
-                    element={<AdminDashboardPage />}
-                  />
-                  <Route path="/admin/foods" element={<AdminFoodsPage />} />
-                  <Route path="/admin/orders" element={<AdminOrdersPage />} />
-                  <Route path="/admin/users" element={<AdminUsersPage />} />
-
-                  {/* 404 route */}
-                  <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-              </main>
-              <Footer />
-            </div>
-            <Toaster position="top-center" reverseOrder={false} />
+                    {/* Not found route */}
+                    <Route path="*" element={<NotFoundPage />} />
+                  </Routes>
+                </main>
+                <Footer />
+              </div>
+            </Router>
+            <Toaster position="bottom-center" />
           </PreloaderProvider>
-        </Router>
+        </AuthProvider>
       </QueryClientProvider>
-    </ClerkProvider>
+    </ErrorBoundary>
   );
-};
+}
 
 export default App;

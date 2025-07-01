@@ -5,7 +5,8 @@ A full-stack MERN application for ordering food from Orange Cheese Pizza restaur
 ## Features
 
 - Responsive design for both desktop and mobile views
-- User authentication with Clerk
+- Custom user authentication with JWT
+- Email and phone number authentication
 - Food menu with categories
 - Food customization options
 - Shopping cart functionality
@@ -24,13 +25,13 @@ A full-stack MERN application for ordering food from Orange Cheese Pizza restaur
 - React Query for data fetching
 - Zustand for state management
 - React Router for navigation
-- Clerk for authentication
+- Custom authentication with JWT
 
 ### Backend
 
 - Node.js with Express
 - MongoDB with Mongoose
-- JWT for API authentication
+- JWT for authentication
 - Cloudinary for image storage
 - Multer for file uploads
 
@@ -41,7 +42,6 @@ A full-stack MERN application for ordering food from Orange Cheese Pizza restaur
 - Node.js (v14 or higher)
 - MongoDB database
 - Cloudinary account
-- Clerk account
 
 ### Installation
 
@@ -86,7 +86,6 @@ For frontend (.env file in frontend folder):
 
 ```
 VITE_API_URL=http://localhost:8000/api
-VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 VITE_CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 VITE_CLOUDINARY_UPLOAD_PRESET=your_cloudinary_upload_preset
 ```

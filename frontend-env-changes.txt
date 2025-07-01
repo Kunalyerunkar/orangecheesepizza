@@ -1,0 +1,9 @@
+# Frontend .env changes
+# The main change is to update the VITE_API_URL to point to port 5000
+
+VITE_API_URL=http://localhost:5000
+VITE_CLOUD_NAME=dssyfiqgk
+VITE_CLOUD_API_KEY=729421763261969
+VITE_CLOUD_API_SECRET=34NyK3P2ydd08AxHkdxqY9INuPU
+# Note: The VITE_CLOUD_API_SECRET is duplicated in your original file, I've removed the duplicate
+# Also removed the Clerk key since we're not using Clerk anymore 
